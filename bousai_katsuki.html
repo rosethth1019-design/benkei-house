@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>克樹さんへ — 防災マニュアル</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #F5F4F0;
+    color: #1a1a18;
+    min-height: 100vh;
+  }
+
+  .header {
+    background: #1a1a18;
+    color: #F5F4F0;
+    padding: 2rem 1.25rem 1.5rem;
+    text-align: center;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: #9E9C95;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .header-title {
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: #9E9C95;
+    line-height: 1.6;
+  }
+  .header-accent {
+    display: inline-block;
+    margin-top: 1rem;
+    background: #3B6D11;
+    color: #EAF3DE;
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 1.25rem;
+  }
+
+  .section {
+    background: #fff;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    border: 0.5px solid #ddddd8;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .section-header:active { background: #F5F4F0; }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-red { background: #FCEBEB; }
+  .icon-blue { background: #E6F1FB; }
+  .icon-green { background: #EAF3DE; }
+  .icon-amber { background: #FAEEDA; }
+  .icon-purple { background: #EEEDFE; }
+
+  .section-meta { flex: 1; }
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a18;
+    line-height: 1.3;
+  }
+  .section-label {
+    font-size: 11px;
+    color: #888780;
+    margin-top: 2px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-red { background: #FCEBEB; color: #A32D2D; }
+  .badge-green { background: #EAF3DE; color: #3B6D11; }
+  .badge-amber { background: #FAEEDA; color: #854F0B; }
+  .badge-blue { background: #E6F1FB; color: #185FA5; }
+
+  .chevron {
+    font-size: 12px;
+    color: #888780;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .chevron.open { transform: rotate(180deg); }
+
+  .section-body {
+    display: none;
+    padding: 0 1.25rem 1.25rem;
+    border-top: 0.5px solid #ebebea;
+  }
+  .section-body.open { display: block; }
+
+  .alert {
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin: 1rem 0 0.75rem;
+    font-size: 13px;
+    line-height: 1.6;
+    border-left: 3px solid;
+  }
+  .alert-red { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
+  .alert-amber { background: #FAEEDA; border-color: #EF9F27; color: #412402; }
+  .alert-green { background: #EAF3DE; border-color: #639922; color: #173404; }
+  .alert-blue { background: #E6F1FB; border-color: #378ADD; color: #042C53; }
+
+  .steps { margin-top: 0.75rem; }
+  .step {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 0.875rem;
+    align-items: flex-start;
+  }
+  .step-num {
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .num-red { background: #FCEBEB; color: #A32D2D; }
+  .num-blue { background: #E6F1FB; color: #185FA5; }
+  .num-green { background: #EAF3DE; color: #3B6D11; }
+  .num-amber { background: #FAEEDA; color: #854F0B; }
+  .num-purple { background: #EEEDFE; color: #534AB7; }
+
+  .step-content {}
+  .step-text { font-size: 14px; line-height: 1.65; color: #1a1a18; }
+  .step-note { font-size: 12px; color: #5F5E5A; margin-top: 3px; line-height: 1.5; }
+
+  .divider { height: 0.5px; background: #ebebea; margin: 0.875rem 0; }
+
+  .checklist { margin-top: 0.75rem; }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 0.5rem 0;
+    border-bottom: 0.5px solid #F0F0EE;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-icon { font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+  .check-text { font-size: 14px; color: #1a1a18; line-height: 1.5; }
+  .check-note { font-size: 12px; color: #5F5E5A; }
+
+  .tool-card {
+    background: #F5F4F0;
+    border-radius: 12px;
+    padding: 0.875rem;
+    margin-bottom: 0.75rem;
+  }
+  .tool-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .tool-emoji { font-size: 20px; }
+  .tool-name { font-size: 14px; font-weight: 600; color: #1a1a18; flex: 1; }
+  .tool-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #EAF3DE;
+    color: #3B6D11;
+    font-weight: 600;
+  }
+  .tool-desc { font-size: 13px; color: #5F5E5A; line-height: 1.5; margin-bottom: 6px; }
+  .tool-how {
+    font-size: 13px;
+    color: #1a1a18;
+    line-height: 1.6;
+    background: #fff;
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+  }
+  .tool-url {
+    font-size: 12px;
+    color: #185FA5;
+    margin-top: 6px;
+    word-break: break-all;
+  }
+
+  .contact-card {
+    background: #F5F4F0;
+    border-radius: 12px;
+    padding: 0.875rem;
+    margin-top: 0.75rem;
+  }
+  .contact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 0.5px solid #ddddd8;
+  }
+  .contact-row:last-child { border-bottom: none; }
+  .contact-label { font-size: 12px; color: #5F5E5A; }
+  .contact-val { font-size: 14px; font-weight: 600; color: #1a1a18; }
+  .contact-placeholder { font-size: 13px; color: #aaa; font-style: italic; }
+
+  .footer {
+    text-align: center;
+    padding: 2rem 1.25rem;
+    font-size: 12px;
+    color: #888780;
+    line-height: 1.8;
+  }
+  .footer-heart { color: #D85A30; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">防災マニュアル</div>
+  <div class="header-title">克樹さんへ</div>
+  <div class="header-sub">外回りの仕事中、もしものときのために。<br>知代子より。</div>
+  <span class="header-accent">✅ 読んで車に積んでおいてね</span>
+</div>
+
+<div class="container">
+
+  <!-- 運転中 -->
+  <div class="section" id="s1">
+    <div class="section-header" onclick="toggle('s1')">
+      <div class="section-icon icon-red">🚗</div>
+      <div class="section-meta">
+        <div class="section-title">運転中に地震が来たとき</div>
+        <div class="section-label">走行中・信号待ち中</div>
+      </div>
+      <span class="badge badge-red">最重要</span>
+      <span class="chevron" id="s1-ch">▼</span>
+    </div>
+    <div class="section-body open" id="s1-body">
+      <div class="alert alert-red">⚠️ 急ブレーキはNG。まず落ち着いて、ゆっくり止まることが大事。</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num num-red">1</div>
+          <div class="step-content">
+            <div class="step-text">ハザードランプをつけながら、ゆっくり減速する</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-red">2</div>
+          <div class="step-content">
+            <div class="step-text">道路の左に寄せて停車する</div>
+            <div class="step-note">🚫 高架・トンネル・橋の上は避けてすぐ出る</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-red">3</div>
+          <div class="step-content">
+            <div class="step-text">エンジンを切り、ラジオで情報を確認する</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-red">4</div>
+          <div class="step-content">
+            <div class="step-text">外に出る場合はドアをロックせずキーを残して避難</div>
+            <div class="step-note">緊急車両が後から動かせるように</div>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="alert alert-amber">🌊 津波警報が出たらすぐ車を捨てて高台へ走る。車より足の方が速いことが多い。</div>
+    </div>
+  </div>
+
+  <!-- 津波 -->
+  <div class="section" id="s2">
+    <div class="section-header" onclick="toggle('s2')">
+      <div class="section-icon icon-blue">🌊</div>
+      <div class="section-meta">
+        <div class="section-title">津波が来たとき</div>
+        <div class="section-label">千葉・茨城エリアで特に注意</div>
+      </div>
+      <span class="badge badge-red">最重要</span>
+      <span class="chevron" id="s2-ch">▼</span>
+    </div>
+    <div class="section-body" id="s2-body">
+      <div class="alert alert-red">⚠️ 津波警報を待たない。揺れを感じたら即、高い場所へ。警報より津波の方が早く来ることがある。</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num num-blue">1</div>
+          <div class="step-content">
+            <div class="step-text">揺れが収まったらすぐ海・川から離れる方向に走る</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-blue">2</div>
+          <div class="step-content">
+            <div class="step-text">「津波避難ビル」の表示がある建物の3階以上へ</div>
+            <div class="step-note">近くにない場合は標高の高い丘・高台へ（海抜10m以上が目安）</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-blue">3</div>
+          <div class="step-content">
+            <div class="step-text">一度引いてもすぐ戻らない。警報解除まで待つ</div>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="alert alert-green">✅ 海抜10m以上の場所に逃げられれば、多くの津波から助かると言われているよ。</div>
+    </div>
+  </div>
+
+  <!-- 標高の調べ方 -->
+  <div class="section" id="s6">
+    <div class="section-header" onclick="toggle('s6')">
+      <div class="section-icon icon-green">📍</div>
+      <div class="section-meta">
+        <div class="section-title">標高・避難場所の調べ方</div>
+        <div class="section-label">海の近くに行く前に確認しておこう</div>
+      </div>
+      <span class="badge badge-green">事前確認</span>
+      <span class="chevron" id="s6-ch">▼</span>
+    </div>
+    <div class="section-body" id="s6-body">
+      <div class="alert alert-blue" style="margin-top:0.75rem;">📱 仕事で海の近くに行くとき、事前にサクッと確認しておくと安心！</div>
+
+      <div class="tool-card">
+        <div class="tool-header">
+          <span class="tool-emoji">🌍</span>
+          <span class="tool-name">Google Earth（アプリ）</span>
+          <span class="tool-tag">一番かんたん</span>
+        </div>
+        <div class="tool-desc">現在地の標高がすぐわかるアプリ。</div>
+        <div class="tool-how">現在地ボタンを押すだけで標高が表示される。長押しで任意の場所も調べられる。</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-header">
+          <span class="tool-emoji">🗺️</span>
+          <span class="tool-name">ハザードマップポータル</span>
+          <span class="tool-tag">津波リスクも確認</span>
+        </div>
+        <div class="tool-desc">国が作ったサイト。津波・洪水・土砂崩れのリスクが地図で色分けして見られる。</div>
+        <div class="tool-how">地名を入れるとそのエリアの危険度がわかる。</div>
+        <div class="tool-url">🔗 https://disaportal.gsi.go.jp</div>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-header">
+          <span class="tool-emoji">🔍</span>
+          <span class="tool-name">Googleマップ</span>
+          <span class="tool-tag">避難場所を探す</span>
+        </div>
+        <div class="tool-desc">いつものGoogleマップで避難場所がすぐ探せる。</div>
+        <div class="tool-how">「津波避難場所」と検索するだけで、近くの避難場所が地図に出る。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 連絡方法 -->
+  <div class="section" id="s3">
+    <div class="section-header" onclick="toggle('s3')">
+      <div class="section-icon icon-amber">📱</div>
+      <div class="section-meta">
+        <div class="section-title">知代子への連絡方法</div>
+        <div class="section-label">電話が繋がらなくても大丈夫</div>
+      </div>
+      <span class="badge badge-amber">連絡</span>
+      <span class="chevron" id="s3-ch">▼</span>
+    </div>
+    <div class="section-body" id="s3-body">
+      <div class="alert alert-amber" style="margin-top:0.75rem;">📵 大地震のとき電話は繋がりにくい。LINEメッセージの方が届きやすいよ。</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num num-amber">1</div>
+          <div class="step-content">
+            <div class="step-text">まずLINEで「無事」とだけ送って（それだけで十分！）</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-amber">2</div>
+          <div class="step-content">
+            <div class="step-text">LINEが繋がらなければ <strong>171（災害用伝言ダイヤル）</strong></div>
+            <div class="step-note">「1」を押して録音 → 知代子が「2」を押して再生できる</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-amber">3</div>
+          <div class="step-content">
+            <div class="step-text">落ち着いたら現在地と状況を短く送ってくれると安心</div>
+          </div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="font-size:13px; color:#5F5E5A; margin-bottom:6px;">📋 連絡先メモ</div>
+      <div class="contact-card">
+        <div class="contact-row">
+          <span class="contact-label">知代子（LINE・電話）</span>
+          <span class="contact-placeholder">後で追加するね</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-label">会社の緊急連絡先</span>
+          <span class="contact-placeholder">後で追加するね</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 車に積むもの -->
+  <div class="section" id="s4">
+    <div class="section-header" onclick="toggle('s4')">
+      <div class="section-icon icon-green">🎒</div>
+      <div class="section-meta">
+        <div class="section-title">車に積んでおくもの</div>
+        <div class="section-label">トランクに入れておこう</div>
+      </div>
+      <span class="badge badge-blue">備え</span>
+      <span class="chevron" id="s4-ch">▼</span>
+    </div>
+    <div class="section-body" id="s4-body">
+      <div class="checklist" style="margin-top:0.75rem;">
+        <div class="check-item">
+          <span class="check-icon">💧</span>
+          <div><div class="check-text">水（500ml × 2本以上）</div></div>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">🔋</span>
+          <div><div class="check-text">モバイルバッテリー（充電済みのもの）</div></div>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">🔦</span>
+          <div><div class="check-text">懐中電灯・軍手</div></div>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">⛽</span>
+          <div>
+            <div class="check-text">ガソリンは半分以下になったら早めに補給</div>
+            <div class="check-note">災害時はガソリンスタンドが混雑する</div>
+          </div>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">🩹</span>
+          <div><div class="check-text">常備薬・絆創膏など簡単な救急セット</div></div>
+        </div>
+        <div class="check-item">
+          <span class="check-icon">🍫</span>
+          <div><div class="check-text">栄養補助食品（カロリーメイトなど）</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 家での行動 -->
+  <div class="section" id="s5">
+    <div class="section-header" onclick="toggle('s5')">
+      <div class="section-icon icon-purple">🏠</div>
+      <div class="section-meta">
+        <div class="section-title">さいたまの家での行動</div>
+        <div class="section-label">帰宅後・在宅中に地震が来たとき</div>
+      </div>
+      <span class="badge badge-blue">備え</span>
+      <span class="chevron" id="s5-ch">▼</span>
+    </div>
+    <div class="section-body" id="s5-body">
+      <div class="steps" style="margin-top:0.75rem;">
+        <div class="step">
+          <div class="step-num num-purple">1</div>
+          <div class="step-content">
+            <div class="step-text">揺れを感じたらまず机の下・クッションで頭を守る</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-purple">2</div>
+          <div class="step-content">
+            <div class="step-text">揺れが収まったら火の元を確認・消す</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-purple">3</div>
+          <div class="step-content">
+            <div class="step-text">ドアを開けて出口を確保してから状況確認</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num num-purple">4</div>
+          <div class="step-content">
+            <div class="step-text">非常用袋の場所を確認しておく</div>
+            <div class="step-note">中身：懐中電灯・水・充電器・保険証のコピーなど</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    遠くにいるけど、いつも心配してるよ。<br>
+    無事でいてね <span class="footer-heart">♥</span><br><br>
+    <span style="font-size:11px;">知代子より</span>
+  </div>
+
+</div>
+
+<script>
+function toggle(id) {
+  const body = document.getElementById(id + '-body');
+  const ch = document.getElementById(id + '-ch');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  ch.classList.toggle('open', !isOpen);
+}
+</script>
+</body>
+</html>
